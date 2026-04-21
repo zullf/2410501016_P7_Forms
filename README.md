@@ -23,14 +23,6 @@ Aplikasi ini bisa membuat user mengupload foto nya sendiri ketika regist dan aka
 
 ---
 
-## Bonus Level 3
-* Data Persistence dengan AsyncStorage
-* Validasi Login terhadap Data Register
-* Autentikasi Sederhana Tanpa Database
-
-
----
-
 ## Screenshot Preview
 
 <p>
