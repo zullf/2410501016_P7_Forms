@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  Alert,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Alert, } from "react-native";
 import { useFormik } from "formik";
 import { FormInput } from "../components/FormInput";
 import { LoginSchema } from "../utils/validationSchemas";
