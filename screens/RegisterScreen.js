@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useFormik } from "formik";
 import { FormInput } from "../components/FormInput";
 import { RegisterSchema } from "../utils/validationSchemas";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const behaviorType = Platform.OS === "ios" ? "padding" : "height";
 
@@ -38,13 +39,15 @@ export default function RegisterScreen({ navigation }) {
       confirmPassword: "",
     },
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const userData = {
         name: values.name,
         email: values.email,
         password: values.password,
         image: profileImage,
       };
+
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
 
       Alert.alert("Sukses", "Register berhasil!");
       navigation.replace("Login", { user: userData });

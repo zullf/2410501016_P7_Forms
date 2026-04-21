@@ -1,7 +1,11 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function HomeScreen({ route }) {
+export default function HomeScreen({ route, navigation }) {
   const user = route.params?.user;
+  const handleLogout = async () => {
+  navigation.replace('Login');
+};
 
   return (
     <View style={styles.container}>
@@ -19,6 +23,9 @@ export default function HomeScreen({ route }) {
       </View>
       <Text style={styles.welcome}>Selamat datang </Text>
 
+      <TouchableOpacity onPress={() => navigation.replace("Login")}>
+        <Text style={{ marginTop: 20, color: "blue" }}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }

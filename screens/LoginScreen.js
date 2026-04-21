@@ -1,7 +1,17 @@
-import { View, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Alert, } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  Alert,
+} from "react-native";
 import { useFormik } from "formik";
 import { FormInput } from "../components/FormInput";
 import { LoginSchema } from "../utils/validationSchemas";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const behaviorType = Platform.OS === "ios" ? "padding" : "height";
 
@@ -11,29 +21,27 @@ export default function LoginScreen({ navigation, route }) {
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: LoginSchema,
-    onSubmit: (values, { setFieldError }) => {
-      if (registeredUser) {
-        if (
-          values.email === registeredUser.email &&
-          values.password === registeredUser.password
-        ) {
-          navigation.replace("Home", { user: registeredUser });
+    onSubmit: async (values, { setFieldError, setSubmitting }) => {
+      try {
+        const storedUser = await AsyncStorage.getItem("user");
+
+        if (!storedUser) {
+          setFieldError("email", "Belum ada akun, silakan register");
+          return;
+        }
+
+        const user = JSON.parse(storedUser);
+
+        if (values.email === user.email && values.password === user.password) {
+          navigation.replace("Home", { user });
         } else {
           setFieldError("email", "Email atau password salah");
         }
-      } else {
-        if (values.email && values.password) {
-          navigation.replace("Home", {
-            user: {
-              name: "Guest",
-              email: values.email,
-              image: null,
-            },
-          });
-        }
+      } finally {
+        setSubmitting(false);
       }
     },
-});
+  });
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={behaviorType}>
